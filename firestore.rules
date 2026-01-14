@@ -1,0 +1,22 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users can read/write only their own user document
+    match /users/{userId} {
+      allow read, update, delete: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Jobs: each job belongs to a user via userId
+    match /jobs/{jobId} {
+      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+    }
+
+    // Cache: server-only; block all direct client access
+    match /cache/{cacheKey} {
+      allow read, write: if false;
+    }
+  }
+}
+
