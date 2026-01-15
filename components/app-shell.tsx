@@ -137,7 +137,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 setMe(null)
                 setLoading(false)
                 // Only redirect if we're not already on a public page
-                const publicRoutes = ["/login", "/signup", "/terms", "/privacy", "/"]
+                const publicRoutes = ["/login", "/signup", "/terms", "/privacy", "/refund", "/"]
                 if (!publicRoutes.some(route => pathname === route || pathname?.startsWith(route + "/"))) {
                     router.push("/")
                 }

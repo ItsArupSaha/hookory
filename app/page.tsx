@@ -899,6 +899,9 @@ export default function LandingPage() {
               <Link href="/privacy" className="hover:text-stone-700">
                 Privacy
               </Link>
+              <Link href="/refund" className="hover:text-stone-700">
+                Refund
+              </Link>
             </div>
           </div>
         </footer>
