@@ -65,6 +65,8 @@ export default function NewRepurposePage() {
         "short-viral-hook": [],
     })
 
+    const [regeneratingFormat, setRegeneratingFormat] = useState<FormatKey | null>(null)
+
     useEffect(() => {
         async function loadMe() {
             if (!auth) return
@@ -257,6 +259,7 @@ export default function NewRepurposePage() {
         const userInfo = await getUserAndToken()
         if (!userInfo) return
         setLoading(true)
+        setRegeneratingFormat(format)
         try {
             const res = await fetch("/api/generate", {
                 method: "POST",
@@ -380,6 +383,7 @@ export default function NewRepurposePage() {
             })
         } finally {
             setLoading(false)
+            setRegeneratingFormat(null)
         }
     }
 
@@ -796,10 +800,17 @@ export default function NewRepurposePage() {
                                                 <button
                                                     type="button"
                                                     onClick={() => handleRegenerate(key)}
-                                                    disabled={!value || value.trim().length === 0}
-                                                    className="rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-[11px] font-medium text-stone-600 shadow-sm transition-all hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 disabled:opacity-50"
+                                                    disabled={(!value || value.trim().length === 0) || loading}
+                                                    className="rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-[11px] font-medium text-stone-600 shadow-sm transition-all hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 disabled:opacity-50 flex items-center gap-1.5 min-w-[85px] justify-center"
                                                 >
-                                                    Regenerate
+                                                    {regeneratingFormat === key ? (
+                                                        <>
+                                                            <Loader2 className="h-3 w-3 animate-spin" />
+                                                            <span>Regenerating...</span>
+                                                        </>
+                                                    ) : (
+                                                        <span>Regenerate</span>
+                                                    )}
                                                 </button>
                                             )}
                                         </div>

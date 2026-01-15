@@ -68,15 +68,15 @@ export async function POST(req: NextRequest) {
   // Plan restrictions - Read from Firebase (source of truth, updated by webhooks)
   const planFromFirebase = userDoc.plan as "free" | "creator" | undefined
   const planExpiresAt = (userDoc.planExpiresAt as any)?.toDate?.() || userDoc.subscriptionPeriodEnd?.toDate() || null
-  
+
   // Check if plan has expired
   const now = new Date()
   const isExpired = planExpiresAt ? planExpiresAt <= now : false
-  
+
   // Determine if user has paid plan access
   const isPaid = planFromFirebase === "creator" && !isExpired
   const maxInputLength = isPaid ? MAX_INPUT_LENGTH_CREATOR : MAX_INPUT_LENGTH_FREE
-  
+
   if (!isPaid) {
     if (inputType === "url") {
       return NextResponse.json(
@@ -160,7 +160,7 @@ export async function POST(req: NextRequest) {
 
   // Default targetAudience if empty
   const targetAudience = context.targetAudience?.trim() || "General LinkedIn users"
-  
+
   const emojiOn = !!context.emojiOn
   // Default to professional tone if not provided
   const tonePreset = context.tonePreset || "professional"
@@ -184,7 +184,11 @@ export async function POST(req: NextRequest) {
       tonePreset
     )
 
-    let output = await getCachedOutput(cacheKey)
+    let output = null
+    if (!regenerate) {
+      output = await getCachedOutput(cacheKey)
+    }
+
     if (output) {
       outputs[format] = output
       fromCache[format] = true

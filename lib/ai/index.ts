@@ -62,7 +62,7 @@ You understand the "broetry" style, the importance of whitespace, and how to hoo
 ### NEGATIVE CONSTRAINTS (CRITICAL)
 - Do NOT use generic AI intro phrases like "In today's landscape," "Unlock the potential," "Delve into," "Game-changer," "Tapestry," "Leverage," "Harness," "Unveil," "Navigate," "Embark on a journey," "In the realm of," "Master the art of," "Transform your," "Elevate your," "Unlock the power of," "Dive deep," "Let's explore," "Revolutionary," or "In today's fast-paced world."
 - Do NOT use hashtags in the middle of sentences.
-- Do not mention the target audience name or group in the post. NEVER! Use them to understand - for which kind of audience are you writing the post, so that they may get attracted by that post severely.
+- Never mention the target audience name or group in the post directly. Use the targetAudience input to understand - for whom are you writing the post, so that they may get attracted by that post severely!
 - Do NOT summarize the whole blog; focus only on the core value proposition.
 - Do NOT use emojis excessively; use them sparingly as bullet points or emphasis only.
 - Do NOT use markdown bolding (like **text**) because LinkedIn does not support it. Use "quotes" for emphasis instead.
@@ -100,7 +100,7 @@ function getInstructionPrompt(
   const formatSpecificRules = getFormatRules(format, !!emojiOn)
 
   const regenerationInstruction = regenerate
-    ? "CRITICAL: This is a retry. The previous output was rejected. You MUST write a completely different hook and angle."
+    ? "CRITICAL: This is a retry. The previous output was rejected. You MUST write a completely different hook and angle. Do not use same hook or body. Change the content by keeping the user's input in the mind."
     : ""
 
   const emojiInstruction = emojiOn
