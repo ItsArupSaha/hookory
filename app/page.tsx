@@ -79,11 +79,11 @@ export default function LandingPage() {
 
         <InfiniteMarquee />
 
+        <HowItWorksSection />
+
         <FeaturesSection />
 
         <PricingSection user={user} />
-
-        <HowItWorksSection />
 
         <WhyDifferentSection />
 

@@ -22,22 +22,14 @@ export function Navbar({ user, loading, navLoading, setNavLoading, navigateWithF
     return (
         <nav className="fixed top-6 left-0 right-0 max-w-[95%] mx-auto rounded-full bg-white/80 backdrop-blur-xl border border-stone-300 shadow-sm z-50 transition-all duration-300">
             <div className="container mx-auto flex items-center justify-between px-6 py-3">
-                <Link href="/" className="flex items-center gap-2 group">
+                <Link href="/" className="flex items-center gap-3 group">
                     <Image
-                        src="/hookoryLogo.png"
+                        src="/hookory_Logo_light_nobg.png"
                         alt="Hookory"
-                        width={32}
-                        height={32}
-                        className="h-8 w-8 object-contain transition-transform group-hover:-translate-y-0.5"
+                        width={160}
+                        height={160}
+                        className="h-40 w-40 -my-16 -ml-6 object-contain"
                     />
-                    <div className="flex flex-col leading-tight">
-                        <span className="text-sm font-semibold tracking-tight text-slate-900">
-                            Hookory
-                        </span>
-                        <span className="text-[11px] text-slate-400">
-                            LinkedIn Repurposer
-                        </span>
-                    </div>
                 </Link>
                 <div className="flex items-center gap-3 md:gap-4">
                     <button
