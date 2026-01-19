@@ -2,6 +2,8 @@ import { adminDb } from "@/lib/firebase/admin"
 import { Timestamp } from "firebase-admin/firestore"
 import { NextRequest, NextResponse } from "next/server"
 import crypto from "crypto"
+import { sendEmail } from "@/lib/email"
+import { getPaymentSuccessEmailTemplate, getPaymentDeclinedEmailTemplate, getSubscriptionEndedEmailTemplate } from "@/lib/email-templates"
 
 export const runtime = "nodejs"
 
@@ -121,6 +123,51 @@ export async function POST(req: NextRequest) {
                 }
 
                 await updateUserSubscriptionInFirestore(firebaseUid, data, customerId, userEmail)
+            }
+        } else if (eventName === 'subscription_payment_success') {
+            // Send Payment Success Email
+            const userEmail = attributes.user_email
+            const userName = attributes.user_name || "Creator"
+            // We can assume it's the Creator plan if it comes here from our product
+            if (userEmail) {
+                const emailHtml = getPaymentSuccessEmailTemplate(userName, "Creator")
+                await sendEmail({
+                    to: userEmail,
+                    subject: "Payment Successful - Hookory",
+                    html: emailHtml
+                })
+            }
+        } else if (eventName === 'subscription_payment_failed') {
+            // Send Payment Declined Email
+            const userEmail = attributes.user_email
+            const userName = attributes.user_name || "Creator"
+            if (userEmail) {
+                const emailHtml = getPaymentDeclinedEmailTemplate(userName)
+                await sendEmail({
+                    to: userEmail,
+                    subject: "Payment Failed - Hookory",
+                    html: emailHtml
+                })
+            }
+        } else if (eventName === 'subscription_expired' || eventName === 'subscription_cancelled') {
+            // Verify if it's really ended (updateUser logic handles db, but we need email)
+            // For cancelled, it might be "cancelled but active until period end".
+            // We only send "Ended" email if it's actually expired or immediate cancellation.
+
+            // Simpler approach: If event is expired, send email. 
+            // If cancelled, check if ends_at is now/past.
+
+            if (eventName === 'subscription_expired') {
+                const userEmail = attributes.user_email
+                const userName = attributes.user_name || "Creator"
+                if (userEmail) {
+                    const emailHtml = getSubscriptionEndedEmailTemplate(userName)
+                    await sendEmail({
+                        to: userEmail,
+                        subject: "Subscription Ended - Hookory",
+                        html: emailHtml
+                    })
+                }
             }
         } else if (eventName === 'order_created') {
             // Only useful if it's a one-time payment, but here we are doing subscriptions.

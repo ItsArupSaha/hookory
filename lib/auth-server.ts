@@ -2,6 +2,8 @@ import { Timestamp } from "firebase-admin/firestore"
 import { NextRequest } from "next/server"
 import { adminAuth, adminDb } from "./firebase/admin"
 import { getNextMonthStart } from "./utils"
+import { sendEmail } from "./email"
+import { getWelcomeEmailTemplate } from "./email-templates"
 
 export type PlanType = "free" | "creator"
 
@@ -63,6 +65,18 @@ export async function getUserFromRequest(req: NextRequest): Promise<AuthedUser |
         updatedAt: Timestamp.fromDate(now),
       }
       await userRef.set(doc)
+
+      // Send Welcome Email
+      if (email) {
+        const emailHtml = getWelcomeEmailTemplate(displayName || "Creator")
+        // Fire and forget - don't block auth flow
+        sendEmail({
+          to: email,
+          subject: "Welcome to Hookory! 🚀",
+          html: emailHtml
+        }).catch(err => console.error("Failed to send welcome email:", err))
+      }
+
       return { uid, firebaseUser: decoded, userDoc: doc }
     }
 

@@ -2,11 +2,13 @@
 
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"
+import { FeedbackDialog } from "@/components/feedback-dialog"
+import { ReviewDialog } from "@/components/review-dialog"
 import { auth, db } from "@/lib/firebase/client"
 import { clearLocalStoragePaymentStatus, cn, getLocalStoragePaymentStatus, setLocalStoragePaymentStatus } from "@/lib/utils"
 import { onAuthStateChanged, signOut, User } from "firebase/auth"
 import { doc, onSnapshot } from "firebase/firestore"
-import { Loader2 } from "lucide-react"
+import { Loader2, MessageSquare, Star } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
@@ -418,6 +420,22 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                         >
                             Settings
                         </Link>
+
+                        <div className="mt-1 pt-1 border-t border-stone-100 flex flex-col gap-1.5">
+                            <FeedbackDialog>
+                                <button className="w-full flex items-center gap-2 rounded-xl px-3 py-2.5 text-stone-600 transition-all duration-200 hover:bg-emerald-50 hover:text-emerald-700 text-left">
+                                    <MessageSquare className="h-4 w-4" />
+                                    Feedback
+                                </button>
+                            </FeedbackDialog>
+
+                            <ReviewDialog>
+                                <button className="w-full flex items-center gap-2 rounded-xl px-3 py-2.5 text-stone-600 transition-all duration-200 hover:bg-emerald-50 hover:text-emerald-700 text-left">
+                                    <Star className="h-4 w-4" />
+                                    Review
+                                </button>
+                            </ReviewDialog>
+                        </div>
                     </nav>
                     {me && (
                         <div className="mt-auto px-2 pb-2">
@@ -447,6 +465,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                                     </Button>
                                 )}
                             </div>
+
                         </div>
                     )}
                 </aside>
@@ -547,8 +566,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                         <div className="mx-auto max-w-6xl">{children}</div>
                     </main>
                 </div>
-            </div>
-        </AppShellContext.Provider>
+            </div >
+        </AppShellContext.Provider >
     )
 }
 
