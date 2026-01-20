@@ -3,7 +3,7 @@ import { NextRequest } from "next/server"
 import { adminAuth, adminDb } from "./firebase/admin"
 import { getNextMonthStart } from "./utils"
 import { sendEmail } from "./email"
-import { getWelcomeEmailTemplate } from "./email-templates"
+import { getWelcomeEmailTemplate } from "./emails/templates"
 
 export type PlanType = "free" | "creator"
 
