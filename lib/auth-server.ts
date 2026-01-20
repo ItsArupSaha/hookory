@@ -24,6 +24,8 @@ export interface UserDoc {
   subscriptionPeriodEnd?: Timestamp | null
   planStartsAt?: Timestamp | null
   planExpiresAt?: Timestamp | null
+  welcomeEmailSent?: boolean
+  welcomeEmailSentAt?: Timestamp
   createdAt: Timestamp
   updatedAt: Timestamp
 }
@@ -66,16 +68,8 @@ export async function getUserFromRequest(req: NextRequest): Promise<AuthedUser |
       }
       await userRef.set(doc)
 
-      // Send Welcome Email
-      if (email) {
-        const emailHtml = getWelcomeEmailTemplate(displayName || "Creator")
-        // Fire and forget - don't block auth flow
-        sendEmail({
-          to: email,
-          subject: "Welcome to Hookory! 🚀",
-          html: emailHtml
-        }).catch(err => console.error("Failed to send welcome email:", err))
-      }
+      // Welcome email is now sent when user first clicks Dashboard button
+      // See /api/welcome-email endpoint
 
       return { uid, firebaseUser: decoded, userDoc: doc }
     }

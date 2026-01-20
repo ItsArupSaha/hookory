@@ -43,6 +43,7 @@ export async function GET(req: NextRequest) {
     lemonSqueezyStatus: lemonSqueezyStatus || null,
     subscriptionPeriodStart: planStartsAt?.toISOString() || null,
     subscriptionPeriodEnd: planExpiresAt?.toISOString() || null,
+    welcomeEmailSent: userDoc.welcomeEmailSent || false,
   })
 }
 

@@ -255,6 +255,57 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         doSync()
     }, [isProcessingPayment, firebaseUser, db, me, refreshUserData])
 
+    // Welcome email processing (runs silently in background)
+    const welcomeEmailCalledRef = useRef(false)
+
+    // Send welcome email when user first enters dashboard
+    useEffect(() => {
+        // Only run on dashboard page
+        if (!pathname?.startsWith("/dashboard")) return
+        // Only run when auth and user data are ready
+        if (!firebaseUser || !me) return
+        // Check if welcome email already sent (from Firestore data via /api/me)
+        const userData = me as any
+        if (userData.welcomeEmailSent === true) {
+            console.log("[AppShell] Welcome email already sent - skipping")
+            return
+        }
+        // Ensure only ONE call
+        if (welcomeEmailCalledRef.current) return
+        welcomeEmailCalledRef.current = true
+
+        console.log("[AppShell] First dashboard visit! Sending welcome email in background...")
+
+        const sendWelcomeEmail = async () => {
+            try {
+                const token = await firebaseUser.getIdToken()
+                console.log("[AppShell] Calling welcome-email endpoint...")
+
+                const res = await fetch("/api/welcome-email", {
+                    method: "POST",
+                    headers: { "Authorization": `Bearer ${token}` }
+                })
+
+                if (res.ok) {
+                    const data = await res.json()
+                    console.log("[AppShell] Welcome email response:", data)
+                    if (data.complete) {
+                        console.log("[AppShell] Welcome email sent successfully!")
+                    }
+                } else {
+                    console.error("[AppShell] Welcome email request failed:", res.status)
+                }
+            } catch (e) {
+                console.error("[AppShell] Welcome email call failed:", e)
+            } finally {
+                refreshUserData() // Refresh to get updated welcomeEmailSent status
+                console.log("[AppShell] Welcome email complete.")
+            }
+        }
+
+        sendWelcomeEmail()
+    }, [pathname, firebaseUser, me, refreshUserData])
+
     // Clean up real-time listener on unmount
     useEffect(() => {
         return () => {
