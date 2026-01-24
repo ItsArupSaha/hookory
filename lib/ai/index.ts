@@ -180,16 +180,18 @@ ${formatSpecificRules}
 
 ### BONUS OUTPUT (MANDATORY)
 After the main post, you MUST output a separator line exactly like this: "---EXTRA_HOOKS---" (ensure it is on a new line).
-Then, list exactly 3 alternative hooks for this post.
+Then, list exactly 5 alternative hooks for this post.
 - Format:
-1. [Hook variation 1]
-2. [Hook variation 2]
-3. [Hook variation 3]
+1. Contrarian Hook: [Hook text]
+2. Problem-first Hook: [Hook text]
+3. Authority Hook: [Hook text]
+4. Curiosity Hook: [Hook text]
+5. Direct promise Hook: [Hook text]
 - Content: Just the opening hook (first 1-2 lines), not the full post.
-- Variation: Ensure they use different angles (e.g., one direct, one story, one question).
+- Variation: Ensure they strictly follow the categories labeled above.
 
 ### FINAL OUTPUT
-Generate the LinkedIn post text, followed by the "---EXTRA_HOOKS---" separator and the numbered list of 3 hooks.`
+Generate the LinkedIn post text, followed by the "---EXTRA_HOOKS---" separator and the numbered list of 5 labeled hooks.`
 }
 
 function getUserPrompt(inputText: string): string {

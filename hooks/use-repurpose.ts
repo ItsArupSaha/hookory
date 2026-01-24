@@ -184,7 +184,7 @@ export function useRepurpose() {
                         .map(line => line.trim())
                         .filter(line => /^\d+\./.test(line))
                         .map(line => line.replace(/^\d+\.\s*/, "").replace(/^"/, "").replace(/"$/, "").trim())
-                        .slice(0, 3)
+                        .slice(0, 5)
 
                     ParsedHooks[key] = hooks
                 } else {
@@ -308,7 +308,7 @@ export function useRepurpose() {
                         .map(line => line.trim())
                         .filter(line => /^\d+\./.test(line))
                         .map(line => line.replace(/^\d+\.\s*/, "").replace(/^"/, "").replace(/"$/, "").trim())
-                        .slice(0, 3)
+                        .slice(0, 5)
 
                     ParsedHooks[key] = hooks
                 } else {
