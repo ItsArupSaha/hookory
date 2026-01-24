@@ -30,20 +30,17 @@ export function HeroSection({ user, loading, navLoading, setNavLoading, navigate
                 <div className="max-w-3xl mx-auto space-y-7 text-center">
                     <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/20 backdrop-blur-md px-4 py-1.5 text-[11px] font-medium text-white shadow-sm mx-auto">
                         <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                        Built for LinkedIn-first creators · Free plan included
+                        Built for people who take LinkedIn seriously · Free plan included
                     </div>
                     <div className="space-y-3">
                         <h1 className="text-4xl font-semibold tracking-tight text-white drop-shadow-2xl sm:text-5xl lg:text-6xl animate-fade-in-up">
-                            Turn one idea into{" "}
+                            Turn long content into LinkedIn posts{" "}
                             <span className="text-emerald-200">
-                                four scroll-stopping
-                            </span>{" "}
-                            LinkedIn posts.
+                                people actually stop to read
+                            </span>
                         </h1>
                         <p className="max-w-xl mx-auto text-base text-white drop-shadow-2xl sm:text-lg font-medium animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-                            Paste a blog, thread, or doc and get multiple LinkedIn-ready
-                            versions with strong hooks, clean structure, and clear CTAs —
-                            in under 30 seconds.
+                            Hookory picks the angle, writes the hook, and structures the post — so you don&apos;t overthink or sound like AI.
                         </p>
                     </div>
 

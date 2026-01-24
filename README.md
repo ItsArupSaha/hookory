@@ -1,272 +1,118 @@
-# Hookline.io – LinkedIn Repurposing SaaS (Next.js + Firebase + Stripe)
-
-Hookline.io turns one piece of content into multiple ready-to-post LinkedIn formats with strong hooks, clean structure, and CTAs. This repo is a production-ready Next.js App Router project with Firebase Auth/Firestore, Stripe billing, usage limits, caching, and an AI provider adapter (Gemini now, OpenAI-ready).
-
-## Tech Stack
-
-- **Framework**: Next.js 14 (App Router, TypeScript)
-- **Styling**: TailwindCSS + shadcn/ui-style components
-- **Auth**: Firebase Authentication (Google + email/password)
-- **Database**: Firestore (users, jobs, cache)
-- **Billing**: Stripe subscriptions + webhook
-- **AI**: OpenAI GPT-4o-mini via `openai`
-- **Hosting target**: Vercel
-
-## Features Overview
-
-- Landing page with hero, before/after, “Why different” and pricing sections.
-- Auth pages:
-  - `/login`: Google + email/password login.
-  - `/signup`: Google + email/password signup with email verification.
-- Protected routes with app shell:
-  - Sidebar: Dashboard, History (paid), Usage, Settings.
-  - Top bar: plan badge, upgrade / manage billing, user menu and logout.
-- **Dashboard** (`/dashboard`):
-  - Tabs: Paste Text / Paste URL (URL is Creator-only).
-  - Context: target audience, goal, style, emoji toggle, tone preset (Creator-only).
-  - Format selection: thought leadership, story-based, educational/carousel, short viral hook.
-  - Generate button with cooldown and disabled states.
-  - Outputs per format: editable textarea, copy button, character count.
-  - History + regenerate behaviour wired server-side (regenerate counts as a usage action; UI currently focuses on primary generate).
-- **History** (`/history` – Creator-only):
-  - List of past jobs with date/time and formats.
-  - Detail view with input and per-format outputs.
-  - Free users see an upgrade paywall.
-- **Usage** (`/usage`):
-  - Monthly usage count and limit.
-  - Usage bar + reset date.
-  - Plan info and upgrade / billing portal buttons.
-- **Settings** (`/settings`):
-  - Account email and verification status.
-  - Resend verification email.
-  - Soft-delete account (clears subscription metadata, marks deleted; no hard delete).
-- Legal pages: `/terms` and `/privacy`.
+# Hookory
+**Turn Blogs into Viral LinkedIn Posts in Seconds.**
 
-## Environment Variables
+---
 
-Copy `.env.example` to `.env.local` and fill in values:
+## What is Hookory?
 
-```bash
-cp .env.example .env.local
-```
+**Hookory** is an intelligent content repurposing engine designed for professionals, founders, and creators who want to build a personal brand on LinkedIn but don't have hours to spend writing from scratch.
 
-### Firebase Client
+Instead of staring at a blank page, Hookory allows you to take existing long-form content—like a blog post, news article, or a rough draft—and instantly transform it into a polished, high-engagement LinkedIn post tailored to your unique voice.
 
-- `NEXT_PUBLIC_FIREBASE_API_KEY`
-- `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
-- `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
-- `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`
-- `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
-- `NEXT_PUBLIC_FIREBASE_APP_ID`
+It’s not just a summarizer; it’s a strategic writing partner that understands the nuances of social media engagement, from hook writing to formatting for mobile readability.
 
-Create a Firebase project, enable **Email/Password** and **Google** sign-in, and copy the client config from the Firebase console.
+---
 
-### Firebase Admin
+## How It Works: The End-to-End Workflow
 
-- `FIREBASE_ADMIN_PROJECT_ID`
-- `FIREBASE_ADMIN_CLIENT_EMAIL`
-- `FIREBASE_ADMIN_PRIVATE_KEY`
+Creating high-quality content with Hookory is a simple, four-step process:
 
-Create a **Service Account** key in Firebase, then:
+### 1. **Input Your Source**
+You don't need to write new ideas to post new content.
+*   **Paste a URL**: Have a great blog post or saw an interesting industry article? Just paste the link. Hookory reads the content directly.
+*   **Paste Text**: Have some rough notes, a partial draft, or a transcript? Paste the raw text directly into the editor.
 
-- Set `FIREBASE_ADMIN_PROJECT_ID` to your project ID.
-- Set `FIREBASE_ADMIN_CLIENT_EMAIL` to the service account email.
-- Set `FIREBASE_ADMIN_PRIVATE_KEY` to the private key (escape newlines as `\n`).
+### 2. **Intelligent Analysis**
+Once you submit your content, Hookory’s AI engine goes to work. It reads through the noise to identify the core value proposition, key insights, and actionable takeaways. It strips away fluff and focuses on what will actually resonate with a professional audience.
 
-### Stripe
+### 3. **Customize Your Strategy**
+A generic post gets generic results. Hookory lets you tailor the output to fit your specific goals:
+*   **Select Your Format**: Choose *how* you want to present the idea (e.g., a story, a lesson, or a carousel).
+*   **Define Your Audience**: Who are you talking to? CEOs? Developers? General professionals?
+*   **Set Your Goal**: Do you want more comments (Engagement), potential clients (Leads), or industry respect (Authority)?
+*   **Tune the Tone**: Make it "Professional & Crisp" or "Conversational & Friendly."
 
-- `STRIPE_SECRET_KEY` – Secret key from Stripe dashboard.
-- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` – Publishable key.
-- `STRIPE_WEBHOOK_SECRET` – Webhook signing secret for the endpoint `/api/stripe/webhook`.
-- `STRIPE_PRICE_ID_CREATOR` – Price ID for the `$9.99/mo` "Creator" subscription.
+### 4. **Generate & Publish**
+In seconds, you get a fully formatted LinkedIn post ready for the feed.
+*   **The Hook**: Every post starts with a scroll-stopping first line.
+*   **The Body**: Clean, punchy sentences with mobile-optimized line breaks.
+*   **The CTA**: A clear Call to Action to drive your specific goal.
+*   **Hashtags**: Relevant, searchable tags included automatically.
 
-Configure a recurring product in Stripe and copy the price ID.
+Don't like the first result? Use the **Regenerate** feature to get a completely fresh angle in seconds.
 
-### AI Provider
+---
 
-- `OPENAI_API_KEY` – from OpenAI Platform.
+## Intelligent features & Modes
 
-## Data Model (Firestore)
+Hookory offers specialized writing modes to match different content strategies:
 
-**Collection: `users` (docId = uid)**
+### 🧠 Thought Leadership Mode
+*Best for: Establishing authority and sharing opinions.*
+This mode focuses on a single, strong insight or contrarian view. It uses a confident tone to challenge common beliefs or share deep expertise.
+*   **Structure**: Strong Hook → Challenge/Insight → Evidence → Reflective Conclusion.
 
-- `email`, `displayName`
-- `plan`: `"free"` | `"creator"`
-- `emailVerified`: boolean
-- `usageCount`: number
-- `usageLimitMonthly`: number (5 free, 100 creator)
-- `usageResetAt`: timestamp (start of next month)
-- `lastGenerateAt`: timestamp (for cooldown)
-- `stripeCustomerId`, `stripeSubscriptionId`, `stripeStatus`
-- `createdAt`, `updatedAt`
-- `deletedAt` (optional, for soft delete)
+### 📖 Story-Based Mode
+*Best for: Building connection and trust.*
+Humans connect with stories, not just facts. This mode transforms dry experiences into a narrative arc, focusing on a specific struggle, a turning point, and a valuable lesson learned.
+*   **Structure**: The Struggle → The Realization → The Transformation → The Takeaway.
 
-**Collection: `jobs` (Creator history)**  
-Only for paid users who opt to save:
+### 🎠 Educational Carousel Mode
+*Best for: Teaching complex topics.*
+Perfect for breaking down "How-to" guides or listicles. This mode generates slide-by-slide text that you can copy directly into a PDF or image carousel design.
+*   **Structure**: Slide 1 (Title) → Slides 2-5 (One tip per slide) → Final Slide (Summary).
 
-- `userId`
-- `inputText` (truncated)
-- `context`
-- `formatsSelected`
-- `outputs` – `{ formatType: outputText }`
-- `createdAt`
+### ⚡ Short Viral Hook Mode
+*Best for: Maximum reach and readability.*
+Minimalist and punchy. This mode strips away all explanations and focuses entirely on the impact. Great for quick tips or sharp observations that people want to repost.
+*   **Structure**: 3-4 punchy lines → One clear truth.
 
-**Collection: `cache`**
+---
 
-- `cacheKey`
-- `outputText`
-- `provider`
-- `createdAt`
+## Smart Customization & History
 
-## Firestore Security Rules
+### Precision Targeting
+Hookory understands that a post for a *CTO* needs to sound different than a post for a *Junior Developer*. By setting your **Target Audience** and **Tone**, the AI adjusts its vocabulary and sentence structure to match.
 
-See `firestore.rules` (draft):
+### Goals That Matter
+Tell Hookory what you want to achieve with the **Goal** selector:
+*   **Engagement**: Asks questions and invites debate.
+*   **Leads**: Focuses on pain points and solutions.
+*   **Authority**: Focuses on expertise and unique insights.
 
-- Users can only read/write their own document.
-- Jobs are readable/writable only by the owner (`userId`).
-- `cache` collection is server-only (no client access).
+### Content History
+Never lose a great idea. Hookory automatically saves your generated posts in your **History** tab. You can seamlessly revisit, edit, or copy past posts whenever you're ready to schedule them.
 
-Deploy these rules from the Firebase CLI for production.
+---
 
-## Usage Limits & Cooldown
+## Why Choose Hookory?
 
-Implemented in `lib/usage.ts` + `lib/auth-server.ts` + `/api/generate`:
+### ✅ Stop Writing From Scratch
+The hardest part of writing is the blank page. Hookory gives you a 90% complete draft in seconds, so you only spend time on the final 10% of personal polish.
 
-- Each **Generate** call counts as **one** repurpose for the current month.
-- Regenerates (if you extend UI) also count as actions.
-- Monthly counters reset when `now > usageResetAt`, then `usageResetAt` is set to the first day of next month (UTC).
-- Cooldown: 45 seconds between generate calls per user; enforced server-side and surfaced as a 429 error with `secondsRemaining`.
+### ✅ Consistency is Key
+Growth on LinkedIn requires showing up every day. By repurposing one blog post into 3-4 different LinkedIn posts (a story, a thought piece, a carousel), you can plan a week's worth of content in minutes.
 
-## AI Adapter
+### ✅ Agency Quality for Less
+Hiring a ghostwriter or agency costs $1,000+ per month. Hookory gives you the same strategic, high-quality output for the price of a coffee.
 
-`lib/ai/index.ts` exports:
+---
 
-- `generateLinkedInFormat(format, inputText, context)`
-
-Supported formats:
-
-- `"thought-leadership"`
-- `"story-based"`
-- `"educational-carousel"`
-- `"short-viral-hook"`
-
-The adapter:
-
-- Builds format-specific prompts enforcing:
-  - Hook in first 2 lines.
-  - Short lines and whitespace.
-  - Optional emojis (controlled by `emojiOn`).
-  - Clear CTA.
-  - Max 3 hashtags or none.
-  - Avoids “AI-sounding” phrases and fluff.
-- Uses Gemini (or OpenAI when `AI_PROVIDER` is switched).
-- Adds timeouts and error handling; empty responses are rejected.
-
-## URL Extraction (Creator-only)
-
-`lib/url-extractor.ts`:
-
-- Fetches HTML server-side with a modern `User-Agent`.
-- Removes scripts/styles and finds main content via common selectors, falling back to `<body>`.
-- Normalizes whitespace and truncates to a max length.
-- Throws if text is too short (likely invalid).
-- No raw HTML is stored—only extracted text is used.
-
-## Caching
-
-`lib/cache.ts`:
-
-- Cache key is `sha256(input + context + format + emoji + tonePreset)`.
-- Data stored in `cache` collection with `createdAt` and `provider`.
-- TTL: 30 days (expired entries are ignored and cleaned lazily).
-- `/api/generate` checks cache first:
-  - If hit: returns cached text, still counts toward usage.
-  - If miss: calls AI, stores cache, then returns.
-
-## Billing (Stripe)
-
-API routes:
-
-- `POST /api/stripe/checkout` – creates a Checkout Session for the Creator plan.
-- `POST /api/stripe/portal` – opens Stripe Billing Portal for existing customers.
-- `POST /api/stripe/webhook` – handles:
-  - `checkout.session.completed`
-  - `customer.subscription.created`
-  - `customer.subscription.updated`
-  - `customer.subscription.deleted`
-  - `invoice.payment_failed`
-  - `invoice.paid`
-
-On successful subscription / updates:
-
-- Sets `plan = "creator"` and `usageLimitMonthly = 100`.
-- Stores `stripeCustomerId`, `stripeSubscriptionId`, `stripeStatus`.
-
-On cancellation / failure:
-
-- Updates `stripeStatus` and flips `plan` back to `"free"` with limit `5` when the subscription is no longer active.
-
-## Auth & Access Rules
-
-- Client auth: Firebase Auth; Google is primary, email/password as secondary.
-- Server verification: Firebase Admin in `lib/auth-server.ts` reads ID token from `Authorization: Bearer <token>`.
-- Protected routes (`/dashboard`, `/usage`, `/history`, `/settings`) are wrapped with `AppShell`:
-  - Redirects to `/login` if not authenticated.
-  - Fetches `/api/me` to show plan + usage.
-- `/api/generate`:
-  - Requires valid ID token.
-  - Requires `emailVerified === true`.
-  - Enforces cooldown and monthly usage.
-  - Enforces plan-specific access:
-    - Free: no URL input, no tone presets, no regenerate.
-    - Creator: full access.
-
-## Running Locally
-
-1. **Install dependencies:**
-
-```bash
-npm install
-```
-
-2. **Set up environment:**
-
-- Copy `.env.example` to `.env.local`.
-- Fill in Firebase client + admin, Stripe, and AI keys.
-
-3. **Run dev server:**
-
-```bash
-npm run dev
-```
-
-The app should be available at `http://localhost:3000`.
-
-4. **Configure Stripe webhook in dev:**
-
-Use the Stripe CLI:
-
-```bash
-stripe listen --forward-to localhost:3000/api/stripe/webhook
-```
-
-Paste the webhook signing secret into `STRIPE_WEBHOOK_SECRET`.
-
-## Deployment (Vercel)
-
-- Add all environment variables in the Vercel dashboard for the project.
-- Ensure Firebase service account env vars are set with newlines escaped as `\n`.
-- Deploy normally; `app/api/stripe/webhook` is configured for Node.js runtime and reads the raw body for signature verification.
-
-## Notes & Extensibility
-
-- AI provider is OpenAI GPT-4o-mini.
-- History UI can be extended with regenerate buttons that call `/api/generate` with `regenerate: true`.
-- Soft-delete currently:
-  - Clears Stripe metadata.
-  - Resets plan to free.
-  - Marks `deletedAt`.
-  - Optionally disables the Firebase Auth user via Admin SDK.
-
-This implementation is intentionally focused on LinkedIn repurposing with a premium, minimal UI and opinionated product constraints as described in the original spec.
-
+## Membership Tiers
+
+### **Free Plan**
+Perfect for trying out the power of AI repurposing.
+*   5 Credits per month.
+*   Access to all basic writing modes.
+*   Standard generation speed.
+
+### **Creator Plan ($9.99/mo)**
+For the serious professional ready to grow.
+*   **100 Credits per month** (enough for daily posting).
+*   **Priority Processing**: Faster generation times.
+*   **Premium Support**: Get help when you need it.
+*   **Unlocks Full History**: Access all your past generations.
+
+---
+
+*Ready to transform your content workflow? Try **Hookory** today.*
