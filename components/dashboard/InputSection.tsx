@@ -76,7 +76,7 @@ export function InputSection({
         if (angle && !ANGLE_OPTIONS.includes(angle as any)) {
             setIsCustomAngle(true)
         }
-    }, []) // Run once on mount to set initial state
+    }, [readerContext, angle]) // Updated dependencies
 
     const handleReaderSelect = (val: string) => {
         if (val === "custom") {

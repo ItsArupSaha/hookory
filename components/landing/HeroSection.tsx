@@ -30,13 +30,13 @@ export function HeroSection({ user, loading, navLoading, setNavLoading, navigate
                 <div className="max-w-3xl mx-auto space-y-7 text-center">
                     <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/20 backdrop-blur-md px-4 py-1.5 text-[11px] font-medium text-white shadow-sm mx-auto">
                         <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                        Built for people who take LinkedIn seriously · Free plan included
+                        Repurpose Long-Form Content into LinkedIn Posts
                     </div>
                     <div className="space-y-3">
                         <h1 className="text-4xl font-semibold tracking-tight text-white drop-shadow-2xl sm:text-5xl lg:text-6xl animate-fade-in-up">
                             Turn long content into LinkedIn posts{" "}
                             <span className="animate-gradient-text">
-                                people actually stop to read
+                                You Can Publish with Confidence!
                             </span>
                         </h1>
                         <p className="max-w-xl mx-auto text-base text-white drop-shadow-2xl sm:text-lg font-medium animate-fade-in-up" style={{ animationDelay: '100ms' }}>
