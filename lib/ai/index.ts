@@ -1,4 +1,13 @@
 import OpenAI from "openai"
+import {
+  getVariationSet,
+  detectDomain,
+  getDomainNouns,
+  HOOK_STRUCTURES,
+  VOICE_ARCHETYPES,
+  EMOTIONAL_TONES,
+  CTA_ENDINGS
+} from "./variations"
 
 /**
  * Supported LinkedIn Output Formats.
@@ -211,10 +220,15 @@ If any of these strings appear, the generation is FAILED:
 
 BANNED CADENCE PATTERNS (INSTANT REJECTION):
 - "Many people assume..." / "Most people think..." / "The common belief is..."
+- "Most creators..." / "Many creators..." / "Most marketers..." / "Many engineers..."
+  → The "Most [role]" pattern is the banned "Most people" in disguise.
 - "But here's the thing..." / "The reality is..."
 - "The key is..." / "The secret is..."
 - "Let me explain..." / "Here's why..."
+- "Here's what I learned..." / "Here's why..."
 - "In today's world..." / "In this era..."
+- "Are you making the same mistake?" / "How's that working for you?" / "Are you prepared?"
+  → These rhetorical questions are too generic.
 
 TENSION INJECTION (MANDATORY):
 Every post must have ONE moment of friction. No safe, balanced takes.
@@ -242,71 +256,88 @@ BANNED OPENERS:
 function getFormatRules(format: LinkedInFormat): string {
   switch (format) {
     case "main-post":
-      return `MAIN POST FORMAT (INSIGHT-FIRST):
-DNA: "Here's what I learned: [claim]. Here's why: [evidence]."
+      return `MAIN POST FORMAT (DYNAMIC OPENING):
 
-FIRST 2 LINES = HOOK (APPLY FRAMEWORK SELECTION):
-Apply STEP 0 from the system prompt. Analyze the source and CHOOSE:
+THE HOOK MUST BE DERIVED, NOT TEMPLATED.
+Before writing the first line, execute this extraction:
+1. Identify the SINGLE most surprising/contrarian element in the source
+2. Convert it into a COLD STATEMENT (no warmup, no setup)
+3. Test: Could this hook be used for a DIFFERENT source? If yes, it's too generic. Rewrite.
 
-IF source has surprising data → Lead with the specific number
-IF source makes a contrarian point → State the bold claim directly
-IF source solves a problem → Name the pain point first
-IF source has a key insight → State the insight as a declaration
-IF source is instructional → State what the reader will achieve
+DYNAMIC OPENING ARCHITECTURE (Source-Derived):
+- If source contains a NUMBER → Lead with the number as a cold fact
+- If source makes a CLAIM → State the bold claim as if it's obvious
+- If source describes a FAILURE → Open with the failure as a confession
+- If source reveals a HIDDEN TRUTH → Open with the truth as a revelation
+- If source has a UNIQUE TERM → Open by defining/redefining that term
 
-HOOK VARIETY TEST:
-Could this hook be used for a DIFFERENT source on a different topic?
-- If YES → You defaulted to a generic pattern. Rewrite with source-specific content.
-- If NO → You earned this hook.
-
-BANNED MAIN-POST OPENERS:
-- "Most people think..." / "Everyone believes..." / "The common belief..."
-- Generic questions / Yes-no questions
-- Template phrases: "Picture this", "Here's the thing", "Let me explain"
+BANNED OPENING PATTERNS:
+- "Here's what I learned..." / "Here's why..."
+- "Most people think..." / "Everyone believes..." / "Most creators..."
+- "Picture this" / "Imagine" / "Let me explain"
+- Any phrase that could apply to 100 different topics
 
 HOOK REQUIREMENTS:
 - Keep under 140 characters (before LinkedIn's "see more")
 - Open with a CLAIM, not a question
-- The claim must be SPECIFIC to this source
+- The claim must be SPECIFIC to this source—if you could swap the topic, it's wrong
 
 STRUCTURE (after hook):
 - EVIDENCE: 3-5 lines. Back up the claim with source details.
-- FRICTION: 1-2 lines. The hard trade-off or uncomfortable truth.
-- PAYOFF: 1-2 lines. The new perspective or reframe.
+- FRICTION: 1-2 lines. The hard trade-off implied by the source.
+- PAYOFF: 1-2 lines. The new perspective or reframe from the source.
+
+THE "SWAP TEST":
+If you removed the topic-specific words and the post still made sense, you've written a template. Rewrite.
 
 HASHTAGS: 3-5 relevant hashtags at the end.`
 
     case "story-based":
-      return `OUTPUT TYPE: STORY-STYLE POST (IN MEDIA RES)
-DNA: "Physical Action → Conflict → Transformation → Insight."
+      return `STORY FORMAT (DYNAMIC PHYSICAL ANCHOR):
 
-THE "PHYSICS" RULE (MANDATORY OPENER):
-The first sentence MUST contain:
-1. A specific PHYSICAL OBJECT (e.g., laptop, phone, door, checkbook, whiteboard).
-2. An ACTIVE VERB of interaction (e.g., slammed, stared at, tore up, froze, clicked).
-- BANNED VERBS (ZOMBIE CHECK): thinking, wondering, realizing, feeling, staring, looking.
-- BANNED OPENERS: "I was frustrated", "I was overwhelmed", "I was knee-deep".
+THE ANCHOR OBJECT MUST BE EXTRACTED FROM THE SOURCE.
+Before writing the first line, execute this extraction:
+1. SCAN the source for domain-specific nouns (NOT generic tech objects)
+2. SELECT the noun that represents the CORE DELIVERABLE or ARTIFACT of this topic
+3. CREATE an opening where the protagonist PHYSICALLY INTERACTS with this extracted noun
 
-IN MEDIA RES (START IN THE MIDDLE):
-- Do NOT explain the context first. Drop the reader into the specific moment of failure or action.
-- BAD: "I was struggling with my marketing strategy." (Telling)
-- GOOD: "I printed my marketing plan and threw it in the trash." (Showing)
+ANCHOR OBJECT EXTRACTION LOGIC:
+- If source is about BLOCKCHAIN → wallet, ledger, node dashboard, smart contract, gas fee receipt
+- If source is about MARKETING → campaign brief, analytics dashboard, client feedback email, ad mockup
+- If source is about SALES → proposal deck, quota sheet, pipeline report, contract, objection log
+- If source is about CODING → pull request, deployment log, error stack, test suite, API docs
+- If source is about STRATEGY → roadmap document, board presentation, competitor analysis, org chart
+- If source is about CONTENT → draft document, editorial calendar, engagement report, style guide
 
-SOURCE NOUN EXTRACTION:
-- Scan the source for specific nouns. If the source mentions "code", the object is "keyboard". If it mentions "sales", the object is "phone" or "CRM".
-- Anchor the story in these physical details.
+NUCLEAR BANNED OBJECTS (NEVER USE):
+- laptop, computer, screen, monitor, phone, keyboard, mouse, desk, coffee, chair
+- These are the LAZY DEFAULTS that make every story sound the same.
+
+VERB EXTRACTION (DOMAIN-DERIVED):
+Instead of generic verbs, derive from the source's emotional tone:
+- FAILURE tone → deleted, cancelled, scrapped, rejected, burned
+- DISCOVERY tone → cracked, decoded, unlocked, uncovered, traced
+- BUILDING tone → assembled, shipped, deployed, wired, connected
+- CONFLICT tone → confronted, refused, pushed back, escalated, walked out
+
+BANNED VERBS: thinking, wondering, staring, looking, gazing, sitting, feeling, realizing
+
+IN MEDIA RES (START IN THE ACTION):
+- Drop the reader into the SPECIFIC moment of failure/action.
+- The first sentence must be a PHYSICAL ACTION with the extracted noun.
+- NO emotional setup. NO context explanation. ACTION FIRST.
 
 STRUCTURE:
-1. THE SCENE (In Media Res): The physical moment of conflict.
-2. THE REALIZATION: The internal shift or "aha" moment.
-3. THE STRATEGY: What you did differently (the source content).
-4. THE RESULT: The specific outcome.
+1. THE SCENE: The physical moment with the extracted anchor object.
+2. THE REALIZATION: The internal shift derived from the source's insight.
+3. THE STRATEGY: The specific approach from the source content.
+4. THE RESULT: A tangible outcome mentioned in the source.
 
-COST OF FAILURE:
-- You must quantify what was at risk. Money? Time? Reputation?
-- "I almost lost the client." / "I wasted 6 months."
+STAKES REQUIREMENT:
+- What was at risk? Extract this from the source's implications.
+- If source doesn't state stakes, derive them: time lost, money risked, reputation damaged.
 
-Tone: Vulnerable but competent. Not "heroic."`
+Tone: Vulnerable but competent. Not heroic.`
 
     case "carousel":
       return `OUTPUT TYPE: CAROUSEL (OPEN LOOP METHOD)
@@ -373,7 +404,8 @@ TONE:
 function getInstructionPrompt(
   format: LinkedInFormat,
   context: GenerateContext,
-  regenerate: boolean
+  regenerate: boolean,
+  inputText: string
 ): string {
   const { readerContext, angle, emojiOn, tonePreset } = context
 
@@ -387,6 +419,35 @@ function getInstructionPrompt(
     : ""
 
   const formatRules = getFormatRules(format)
+
+  // GET SHUFFLED VARIATIONS for this generation (no repeats until list exhausted)
+  const variationSet = getVariationSet()
+
+  // Detect domain from source to get relevant nouns
+  const domain = detectDomain(inputText)
+  const domainNouns = getDomainNouns(domain)
+
+  // Build variation instructions for AI
+  const voiceInfo = typeof variationSet.voice === 'object' ? variationSet.voice : { name: 'DEFAULT', description: '', style: '' }
+  const emotionInfo = typeof variationSet.emotion === 'object' ? variationSet.emotion : { name: 'DEFAULT', trigger: '' }
+
+  const variationsInstruction = `
+═══════════════════════════════════════════════════════════════════
+ASSIGNED VARIATIONS FOR THIS POST (USE THESE EXACTLY)
+═══════════════════════════════════════════════════════════════════
+HOOK STRUCTURE: "${variationSet.hook}"
+VOICE ARCHETYPE: ${voiceInfo.name} - "${voiceInfo.description}"
+  Style: ${voiceInfo.style}
+EMOTIONAL UNDERCURRENT: ${emotionInfo.name} - "${emotionInfo.trigger}"
+CTA ENDING: "${variationSet.cta}"
+DETECTED DOMAIN: ${domain.toUpperCase()}
+DOMAIN-SPECIFIC NOUNS (use for story anchors):
+${domainNouns.map(n => `  - ${n}`).join('\n')}
+═══════════════════════════════════════════════════════════════════
+
+YOUR TASK: Adapt the hook structure, voice, emotion, and CTA above to fit the source content.
+The variation tells you HOW to write. The source tells you WHAT to write about.
+`
 
   /**
    * Critical upgrade: force a silent extraction step that:
@@ -409,7 +470,8 @@ function getInstructionPrompt(
    - Formulate it as a convicted statement: "Most people misunderstand X. The real leverage is Y."
    - DISAGREEMENT CHECK: If a reasonable expert can't disagree with this ('Things are changing' = WEAK), then SHARPEN it.
 2) ANCHOR SELECTION: Pick 3 concrete details (numbers, names, steps) to prove this exact POV.
-3) STRUCTURE MAPPING: Plan where you will arguably disagree with conventional wisdom.`
+3) STRUCTURE MAPPING: Plan where you will arguably disagree with conventional wisdom.
+4) VARIATION APPLICATION: Apply your assigned hook structure, voice, emotion, and CTA to the content.`
   }
 
   const writeInstructions = `WRITE (output only the post):
@@ -417,6 +479,10 @@ function getInstructionPrompt(
 - Make the angle obvious through examples, contrast, and natural reinforcement.
 - Vary paragraph lengths. Mix punchy 1-liners with 2-3 sentence thoughts. Monotony = robotic.
 - Group related ideas. Use whitespace to create visual flow, not after every sentence.
+- CRITICAL: Start with the HOOK STRUCTURE you were assigned. Adapt it to the source.
+- CRITICAL: Maintain the VOICE ARCHETYPE throughout the post.
+- CRITICAL: Infuse the EMOTIONAL UNDERCURRENT into every paragraph.
+- CRITICAL: End with the CTA STYLE you were assigned.
 - No markdown styling. Raw text only.`
 
   // Reader context guidance (lightweight, not persona-theatre)
@@ -450,6 +516,8 @@ Auto-pick the strongest single lens from the source. Ignore the rest.`
 - Tone: ${tonePreset || "professional"}
 - Emojis: ${emojiInstruction}
 ${angleNote}
+
+${variationsInstruction}
 
 ${readerGuidance}
 
@@ -543,7 +611,8 @@ async function generateWithOpenAI(options: GenerateOptions): Promise<string> {
   const instructionPrompt = getInstructionPrompt(
     options.format,
     options.context,
-    options.regenerate || false
+    options.regenerate || false,
+    options.inputText
   )
   const userPrompt = getUserPrompt(options.inputText)
 
