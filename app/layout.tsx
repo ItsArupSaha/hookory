@@ -1,6 +1,6 @@
 import { PageTransition } from "@/components/layout/page-transition"
 import { Toaster } from "@/components/ui/toaster"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Ubuntu } from "next/font/google"
 import "./globals.css"
 
@@ -41,6 +41,13 @@ export const metadata: Metadata = {
         icon: "/hookory_Logo_light.png",
         apple: "/hookory_Logo_light.png",
     },
+}
+
+export const viewport: Viewport = {
+    themeColor: "white",
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
 }
 
 export default function RootLayout({
