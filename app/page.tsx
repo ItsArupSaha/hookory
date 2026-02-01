@@ -8,11 +8,10 @@ import { useEffect, useState } from "react"
 
 import { HeroSection } from "@/components/landing/HeroSection"
 import { InfiniteMarquee } from "@/components/landing/InfiniteMarquee"
-import { FeaturesSection } from "@/components/landing/FeaturesSection"
 import { HowItWorksSection } from "@/components/landing/HowItWorksSection"
 import { ProblemSection } from "@/components/landing/ProblemSection"
 import { SolutionSection } from "@/components/landing/SolutionSection"
-import { WhyDifferentSection, WhoItsForSection } from "@/components/landing/InfoSections"
+import { WhoItsForSection } from "@/components/landing/InfoSections"
 import { PricingSection } from "@/components/landing/PricingSection"
 import { Navbar } from "@/components/landing/Navbar"
 import { PostTypesSection } from "@/components/landing/PostTypesSection"
@@ -92,10 +91,6 @@ export default function LandingPage() {
         <HowItWorksSection />
 
         <ResultsShowcase />
-
-        <WhyDifferentSection />
-
-        <FeaturesSection />
 
         <PricingSection user={user} />
 
