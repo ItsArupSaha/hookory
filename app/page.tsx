@@ -15,6 +15,8 @@ import { SolutionSection } from "@/components/landing/SolutionSection"
 import { WhyDifferentSection, WhoItsForSection } from "@/components/landing/InfoSections"
 import { PricingSection } from "@/components/landing/PricingSection"
 import { Navbar } from "@/components/landing/Navbar"
+import { PostTypesSection } from "@/components/landing/PostTypesSection"
+import { ResultsShowcase } from "@/components/landing/ResultsShowcase"
 
 export default function LandingPage() {
   const router = useRouter()
@@ -85,13 +87,17 @@ export default function LandingPage() {
 
         <SolutionSection />
 
+        <PostTypesSection />
+
         <HowItWorksSection />
+
+        <ResultsShowcase />
+
+        <WhyDifferentSection />
 
         <FeaturesSection />
 
         <PricingSection user={user} />
-
-        <WhyDifferentSection />
 
         <WhoItsForSection />
 
