@@ -4,7 +4,7 @@ import { Compass, Zap, LayoutList } from "lucide-react"
 
 export function SolutionSection() {
     return (
-        <section className="pt-10 pb-20 md:pt-14 md:pb-28 px-4 md:px-6 lg:px-8 bg-gradient-to-b from-stone-100 to-stone-50">
+        <section className="pt-10 pb-10 md:pt-14 md:pb-14 px-4 md:px-6 lg:px-8 bg-gradient-to-b from-stone-100 to-stone-50">
             <div className="max-w-6xl mx-auto">
                 {/* Section intro */}
                 <div className="text-center mb-14 md:mb-20">

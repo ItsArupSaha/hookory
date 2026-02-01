@@ -1,124 +1,101 @@
 # Hookory
-**Turn Blogs into Viral LinkedIn Posts in Seconds.**
+**The Anti-Template LinkedIn Engine.**
+
+> **Turn messy blogs, notes, and transcripts into high-conviction LinkedIn posts.**
 
 ---
 
 ## What is Hookory?
 
-**Hookory** is a creator-grade content repurposing engine for professionals, founders, and creators who want to build a personal brand on LinkedIn without spending hours writing from scratch.
+**Hookory** is NOT a summarizer. It is a creator-grade repurposing engine designed for founders, professionals, and thought leaders who refuse to sound like ChatGPT.
 
-Unlike generic AI summarizers, Hookory transforms source content into **opinionated, scroll-stopping posts** with real conviction and human-like voice. Every output is designed to make readers stop, think, and engage.
+Most AI tools use static templates (*"Here are 5 ways to..."*). Hookory uses a **Dynamic Extraction System (DES)** to pull unique angles, specific nouns, and bold opinions directly from your source material.
 
----
-
-## How It Works
-
-### 1. **Input Your Source**
-- **Paste a URL**: Blog post, news article, research paper—just paste the link.
-- **Paste Text**: Raw notes, transcripts, or partial drafts work too.
-
-### 2. **Set Context & Angle**
-- **Who is it for?** (Reader Context): Peers, Learners, Decision-makers, or custom audience.
-- **What is the focus?** (Angle): "Common Mistake", "Lesson Learned", or "Strong Opinion".
-- **Tone & Style**: Professional, Conversational, or Bold. Emojis on/off.
-
-### 3. **Generate & Publish**
-Select your output format and get a fully polished LinkedIn post in seconds:
-- **The Hook**: Scroll-stopping first line with conviction.
-- **The Body**: Clean, punchy sentences with mobile-optimized formatting.
-- **5 Bonus Hooks**: A/B test your opening line.
+It doesn’t just "write" posts. It **ghostwrites** them with conviction, distinct voice archetypes, and zero robotic fluff.
 
 ---
 
-## Output Formats
+## The Core Engines
 
-### 📝 Main Post (Insight-First)
-*Best for: Daily updates and thought leadership.*
+Hookory operates on two distinct generation engines:
 
-**DNA**: "Here's what I learned: [claim]. Here's why: [evidence]."
+### 1. The Single Post Engine (Specific Impact)
+Turn one source into one high-leverage post. Optimized for the "thumb-stop."
 
-Opens with a bold claim, backs it up with source details, includes a hard trade-off or uncomfortable truth, and ends with a new perspective.
+| Format | Best For | The DNA |
+| :--- | :--- | :--- |
+| **📝 Main Post** | Thought Leadership | **Insight-First.** Opens with a contrarian claim or bold prediction derived from the source. No "Here's what I learned" fluff. |
+| **📖 Story Post** | Building Trust | **Narrative-First.** Uses *Physical Anchor Extraction* to ground the story in a real scene (e.g., staring at a *Stripe Dashboard*, not a generic "laptop"). |
+| **🎠 Carousel** | Teaching / Reach | **Open Loop Structure.** 5-7 slides where every slide ends with a micro-cliffhanger to force the swipe. |
+| **⚡ Viral Hook** | Top of Funnel | **Punch-First.** Short, sharp, under 600 chars. Opens with a jarring stat or blunt truth to stop the scroll immediately. |
 
----
+### 2. The Narrative Series Engine (4-Day Calendar)
+Turn one rich source (long blog, video transcript, whitepaper) into a **cohesive 4-day content campaign**.
 
-### 📖 Story Post (Protagonist-First)
-*Best for: Building connection and trust.*
+Instead of writing 4 random posts, the Series Engine slices user content into a linear narrative arc:
 
-**DNA**: "[Person] was stuck. Then [event]. Now [outcome]."
+*   **DAY 1: The Context (The Setup)**
+    *   *Goal:* Define the status quo and interrupt it.
+    *   *Type:* Main Post or Viral Hook.
+*   **DAY 2: The Mistake (The Tension)**
+    *   *Goal:* Call out what most people get wrong. Challenge conventional wisdom.
+    *   *Type:* Contrarian / Problem-Focused.
+*   **DAY 3: The Framework (The Solution)**
+    *   *Goal:* Teach the specific "How-To" or system from the source.
+    *   *Type:* Educational / Step-by-Step.
+*   **DAY 4: The Outcome (The Proof)**
+    *   *Goal:* Show the tangible results/impact. Validate the approach.
+    *   *Type:* Story or Data-Backed Case Study.
 
-Features a real protagonist (not "most people"), a specific struggle with sensory details, a turning point, and a resolution. Every story passes the "movie scene" test—if you can't visualize it, it's too abstract.
-
----
-
-### 🎠 Carousel (Revelation Arc)
-*Best for: Teaching complex topics with swipe urgency.*
-
-**DNA**: "You think X. But actually Y. Here's what changes."
-
-Each slide creates an incomplete thought that forces the swipe. No listicle energy. No predictable "Problem → Solution" patterns. Every slide ends with a cliffhanger.
-
----
-
-### ⚡ Short Viral Hook (Punch-First)
-*Best for: Maximum reach and impact.*
-
-**DNA**: "[Sharp claim]. [One sentence of evidence]. [Challenge]."
-
-The sharpest possible opening. Minimal words. Maximum punch. Think tweet energy, LinkedIn packaging.
+> **The Calendar Test:** The engine ensures that if you posted these Mon-Thu, your audience would feel like they are getting fresh, progressing insights every day, not repetitive noise.
 
 ---
 
-## What Makes Hookory Different
+## What Makes It Different? (The "Anti-Template" Logic)
+
+Hookory enforces strict quality rules at the code level to prevent "AI slop."
+
+### ✅ Dynamic Prop Extraction (No Generic Anchors)
+*   If you write a story about coding, Hookory extracts *specifics*: "Terminal window," "Pull Request," "Bug Report."
+*   **BANNED:** Generic terms like "laptop," "coffee," "meeting room," "screen."
 
 ### ✅ Conviction Injection
-Every post contains at least one of:
-- A **contrarian claim**: "Most people misunderstand X."
-- A **bold prediction**: "This will be obsolete in 2 years."
-- An **uncomfortable truth**: "Nobody tells you this, but..."
-- A **polarizing stance**: "I'd rather X than Y."
+Every generated post must contain at least one of these friction points:
+*   A **Contrarian Claim** (*"Everyone optimizes for X, but Y is the real metric."*)
+*   A **Bold Prediction** (*"In 2 years, this strategy will be dead."*)
+*   An **Uncomfortable Truth** (*"Most founders lie about this."*)
+*   *If a reasonable person can't disagree with the post, Hookory considers it failed.*
 
-If a reasonable person couldn't disagree with your main claim, it's too weak.
+### ✅ Stat Integrity (Zero Hallucination)
+*   If the source has numbers, Hookory uses them.
+*   If the source has NO numbers, Hookory is **forbidden** from inventing them. It uses qualitative anchors instead (*"I've seen this fail..."*).
 
----
-
-### ✅ Stat Integrity (Zero Tolerance)
-- **Never invents statistics.** Only uses numbers explicitly in the source.
-- Instead of fake percentages, uses qualitative anchors: "I've seen this fail firsthand."
-
----
-
-### ✅ Emotional Anchoring
-- No generic "I struggled" or "It was hard."
-- Every story includes a **specific moment** you can visualize like a movie scene.
-- Uses verbs like "flinched", "hesitated", "froze", "realized at 2AM".
+### ✅ Engagement-First CTAs
+No more *"What do you think?"* or *"Agree?"*. Hookory generates CTAs designed to spark debate:
+*   **The Hot Take:** *"Change my mind: X is overrated."*
+*   **The Confession:** *"What's the expensive mistake you made doing this?"*
+*   **The Challenge:** *"Prove me wrong."*
 
 ---
 
-### ✅ Disagreement-Inviting CTAs
-No more "What steps are you taking?" or "Are you ready?"
+## Tech Stack
 
-Instead:
-- **Hot Take Challenge**: "Change my mind: X is overrated."
-- **Confession Prompt**: "What's the worst mistake you made doing X?"
-- **Polarizing Either/Or**: "Would you rather lose your audience or your integrity?"
-
-If the CTA can be answered in under 5 words, it's too weak.
+*   **Framework:** Next.js 14 (App Router)
+*   **Database:** Firebase (Firestore)
+*   **Auth:** Firebase Auth
+*   **AI:** OpenAI GPT-4o-mini (custom hyper-tuned prompts)
+*   **Payments:** Lemon Squeezy
+*   **Styling:** Tailwind CSS + Shadcn/UI
 
 ---
 
 ## Membership Tiers
 
-### **Free Plan**
-- 5 Credits per month
-- Access to all writing modes
-- Standard generation speed
-
-### **Creator Plan ($9.99/mo)**
-- **100 Credits per month** (enough for daily posting)
-- **Priority Processing**: Faster generation times
-- **URL Extraction**: Repurpose content from any public link
-- **Premium Support**
+| Tier | Price | Features |
+| :--- | :--- | :--- |
+| **Free** | $0 | 5 Credits/mo, All formats, Standard Speed |
+| **Creator** | $9.99/mo | **100 Credits/mo** (Daily posting), Priority Speed, URL Extraction, Premium Support |
 
 ---
 
-*Ready to transform your content workflow? Try **Hookory** today.*
+*Built for those who respect the feed.*

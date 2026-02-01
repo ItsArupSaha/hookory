@@ -4,15 +4,15 @@ import { Zap, Layers, ArrowRight, BarChart3, Repeat } from "lucide-react"
 
 export function PostTypesSection() {
     return (
-        <section className="py-20 md:py-32 px-4 md:px-6 lg:px-8 bg-stone-50">
+        <section className="py-16 md:py-24 px-4 md:px-6 lg:px-8 bg-emerald-50/30">
             <div className="max-w-6xl mx-auto">
                 {/* Section intro */}
                 <div className="text-center mb-16 md:mb-24">
                     <h2 className="text-3xl md:text-5xl font-bold text-stone-900 tracking-tight">
-                        Two Ways to <span className="text-emerald-600">Dominate</span> the Feed
+                        Two Engines. <span className="text-emerald-600">Complete Control.</span>
                     </h2>
                     <p className="mt-6 text-lg md:text-xl text-stone-600 max-w-2xl mx-auto leading-relaxed">
-                        Most creators fail because they only have one gear. Hookory gives you two: speed for daily consistency, and depth for building authority.
+                        Stop guessing what to write. Choose your objective, and let Hookory’s anti-template engine handle the rest.
                     </p>
                 </div>
 
@@ -29,16 +29,16 @@ export function PostTypesSection() {
                                 </div>
                                 <div>
                                     <h3 className="text-2xl font-bold text-stone-900">
-                                        The Single Post
+                                        The Impact Post
                                     </h3>
                                     <p className="text-emerald-600 font-medium text-sm mt-0.5">
-                                        Your Daily Growth Engine
+                                        Optimized for the "Thumb-Stop"
                                     </p>
                                 </div>
                             </div>
 
                             <p className="text-lg text-stone-600 leading-relaxed mb-8">
-                                Consistency is the only "hack" that works. Use Single Posts to stay top-of-mind every single day without burning out.
+                                Turn a scattered thought or URL into a high-conviction post that stops the scroll. No fluff. No generic advice.
                             </p>
 
                             <div className="space-y-6 flex-grow">
@@ -47,9 +47,9 @@ export function PostTypesSection() {
                                         <Repeat className="w-4 h-4" />
                                     </div>
                                     <div>
-                                        <h4 className="font-semibold text-stone-900">Never miss a day</h4>
+                                        <h4 className="font-semibold text-stone-900">Anti-Template Engine</h4>
                                         <p className="text-stone-500 text-sm mt-1">
-                                            Turn a random thought or quick link into a polished post in seconds. No more "I don't know what to post."
+                                            Our Dynamic Extraction System pulls unique nouns and verbs from your source. You never sound like ChatGPT.
                                         </p>
                                     </div>
                                 </div>
@@ -59,9 +59,9 @@ export function PostTypesSection() {
                                         <BarChart3 className="w-4 h-4" />
                                     </div>
                                     <div>
-                                        <h4 className="font-semibold text-stone-900">Maximize Reach</h4>
+                                        <h4 className="font-semibold text-stone-900">Conviction First</h4>
                                         <p className="text-stone-500 text-sm mt-1">
-                                            Short, punchy, and algorithm-friendly. Designed to stop the scroll and trigger immediate engagement.
+                                            Every post is engineered with a "Bold Claim" or "Uncomfortable Truth" to trigger debate, not just likes.
                                         </p>
                                     </div>
                                 </div>
@@ -90,16 +90,16 @@ export function PostTypesSection() {
                                 </div>
                                 <div>
                                     <h3 className="text-2xl font-bold text-white">
-                                        The Series Post
+                                        The Narrative Arc
                                     </h3>
                                     <p className="text-violet-300 font-medium text-sm mt-0.5">
-                                        Your Authority Builder
+                                        4 Days of Authority. One Click.
                                     </p>
                                 </div>
                             </div>
 
                             <p className="text-lg text-stone-300 leading-relaxed mb-8">
-                                Experts don't just post; they teach. Turn one deep topic into a 4-day narrative arc that builds true followers, not just likes.
+                                Don't just post random updates. Turn one deep resource into a 4-day mini-campaign that guides your audience.
                             </p>
 
                             <div className="space-y-6 flex-grow">
@@ -108,9 +108,9 @@ export function PostTypesSection() {
                                         <span className="font-mono font-bold text-xs">4x</span>
                                     </div>
                                     <div>
-                                        <h4 className="font-semibold text-white">The "Netflix Effect"</h4>
+                                        <h4 className="font-semibold text-white">The "Netflix" Effect</h4>
                                         <p className="text-stone-400 text-sm mt-1">
-                                            We take one URL and generate 4 connected posts. Open loops, cliffhangers, and payoffs that keep people coming back.
+                                            A structured sequence: Day 1 (The Hook) → Day 2 (The Mistake) → Day 3 (The System) → Day 4 (The Proof).
                                         </p>
                                     </div>
                                 </div>
@@ -120,9 +120,9 @@ export function PostTypesSection() {
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                     </div>
                                     <div>
-                                        <h4 className="font-semibold text-white">Prove Competence</h4>
+                                        <h4 className="font-semibold text-white">Compound Authority</h4>
                                         <p className="text-stone-400 text-sm mt-1">
-                                            Single posts show you're active. A well-structured series proves you actually know what you're talking about.
+                                            Single posts vanish. A recurring narrative builds trust that sticks. Deep expertise, delivered daily.
                                         </p>
                                     </div>
                                 </div>
@@ -130,7 +130,7 @@ export function PostTypesSection() {
 
                             <div className="mt-10 pt-8 border-t border-white/10">
                                 <span className="inline-flex items-center text-violet-300 font-semibold group-hover:gap-2 transition-all">
-                                    Start a Series <ArrowRight className="ml-1 w-4 h-4" />
+                                    Start a Narrative Series <ArrowRight className="ml-1 w-4 h-4" />
                                 </span>
                             </div>
                         </div>
