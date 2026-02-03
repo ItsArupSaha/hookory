@@ -18,7 +18,7 @@ export const getEmailStyles = () => `
   .copyright { margin-top: 24px; color: #94a3b8; font-size: 11px; }
 `;
 
-const wrapEmail = (title: string, content: string) => `
+export const wrapEmail = (title: string, content: string) => `
 <!DOCTYPE html>
 <html>
 <head>

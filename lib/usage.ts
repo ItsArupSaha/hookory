@@ -100,8 +100,14 @@ export async function checkCooldown(userId: string): Promise<{ allowed: boolean;
   }
 }
 
+import { getUsageLimitEmailTemplate, getUsageWarningEmailTemplate } from "./emails/usage-alerts"
+import { sendEmail } from "./email"
+
 export async function incrementUsage(userId: string, amount: number = 1): Promise<void> {
   const userRef = adminDb.collection("users").doc(userId)
+
+  // Track if we need to send an email after transaction commits
+  let emailTask: (() => Promise<void>) | null = null
 
   await adminDb.runTransaction(async (transaction) => {
     const userDoc = await transaction.get(userRef)
@@ -127,17 +133,79 @@ export async function incrementUsage(userId: string, amount: number = 1): Promis
     let usageCount = (userData.usageCount || 0) + amount
     let usageResetAt = resetAt
 
-    // Reset if past reset date
+    // Check for resets
     if (now >= resetAt) {
-      usageCount = amount // Reset to just the current usage amount
+      usageCount = amount
       usageResetAt = getNextMonthStart()
+
+      // Reset email flags on monthly reset
+      transaction.update(userRef, {
+        usageCount,
+        usageResetAt: usageResetAt,
+        lastGenerateAt: Timestamp.fromDate(now),
+        updatedAt: Timestamp.fromDate(now),
+        usageWarningEmailSent: false, // Reset flag
+        usageLimitEmailSent: false,   // Reset flag
+      })
+      return
     }
 
-    transaction.update(userRef, {
+    const usageLimit = userData.usageLimitMonthly || 5 // Default free limit
+    const warningThreshold = Math.floor(usageLimit * 0.8)
+
+    let updateData: any = {
       usageCount,
       usageResetAt: usageResetAt,
       lastGenerateAt: Timestamp.fromDate(now),
-      updatedAt: Timestamp.fromDate(now),
-    })
+      updatedAt: Timestamp.now(),
+    }
+
+    // Alert Logic
+    const email = userData.email
+    const displayName = userData.displayName || "Creator"
+
+    // 80% Warning
+    if (usageCount >= warningThreshold && usageCount < usageLimit) {
+      if (!userData.usageWarningEmailSent) {
+        updateData.usageWarningEmailSent = true
+        // Queue email task
+        emailTask = async () => {
+          console.log(`[Usage] Sending 80% warning to ${email}`)
+          await sendEmail({
+            to: email,
+            subject: "Heads Up: You've used 80% of your limit",
+            html: getUsageWarningEmailTemplate(displayName, usageLimit)
+          })
+        }
+      }
+    }
+
+    // 100% Limit
+    if (usageCount >= usageLimit) {
+      if (!userData.usageLimitEmailSent) {
+        updateData.usageLimitEmailSent = true
+        // Queue email task
+        emailTask = async () => {
+          console.log(`[Usage] Sending 100% limit alert to ${email}`)
+          await sendEmail({
+            to: email,
+            subject: "Action Required: Monthly Limit Reached",
+            html: getUsageLimitEmailTemplate(displayName)
+          })
+        }
+      }
+    }
+
+    transaction.update(userRef, updateData)
   })
+
+  // Execute side effect after successful commit
+  if (emailTask) {
+    try {
+      await (emailTask as any)()
+    } catch (err) {
+      console.error("Failed to send usage alert email:", err)
+      // Process continues - email failure shouldn't block user flow
+    }
+  }
 }

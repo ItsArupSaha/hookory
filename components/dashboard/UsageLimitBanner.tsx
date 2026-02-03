@@ -1,7 +1,6 @@
-"use client"
-
+import { useAppShell } from "@/components/layout/app-shell"
+import { Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useRouter } from "next/navigation"
 
 interface UsageLimitBannerProps {
     isLimitReached: boolean
@@ -10,9 +9,13 @@ interface UsageLimitBannerProps {
 }
 
 export function UsageLimitBanner({ isLimitReached, usageCount, usageLimitMonthly }: UsageLimitBannerProps) {
-    const router = useRouter()
+    const { me, handleUpgrade, handleBillingPortal, upgrading, portalLoading } = useAppShell()
 
     if (!isLimitReached) return null
+
+    const isCreator = me?.plan === "creator"
+    const isLoading = upgrading // Always use upgrading state now
+    const handler = handleUpgrade // Always use checkout flow
 
     return (
         <div className="rounded-3xl border border-stone-200 bg-white/80 p-6 shadow-sm backdrop-blur-md">
@@ -29,9 +32,14 @@ export function UsageLimitBanner({ isLimitReached, usageCount, usageLimitMonthly
                 <Button
                     size="sm"
                     className="rounded-full bg-stone-900 px-6 text-xs text-white hover:bg-stone-800 shadow-lg"
-                    onClick={() => router.push("/usage")}
+                    onClick={() => handler()}
+                    disabled={isLoading}
                 >
-                    Upgrade Now
+                    {isLoading ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                        "Upgrade Now"
+                    )}
                 </Button>
             </div>
         </div>

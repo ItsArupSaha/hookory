@@ -365,7 +365,7 @@ export function InputSection({
                         [
                             ["main-post", "Main LinkedIn post"],
                             ["story-based", "Story-style post"],
-                            ["carousel", "Educational / carousel text"],
+                            ["carousel", "Carousel text"],
                             ["short-viral-hook", "Short hook post (scroll-stopping)"],
                         ] as [FormatKey, string][]
                     ).map(([key, label]) => (

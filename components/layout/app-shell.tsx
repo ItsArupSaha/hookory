@@ -29,6 +29,10 @@ interface AppShellContextType {
     refreshUserData: () => Promise<void>
     me: MeResponse | null
     loading: boolean
+    handleUpgrade: () => Promise<void>
+    handleBillingPortal: () => Promise<void>
+    upgrading: boolean
+    portalLoading: boolean
 }
 
 const AppShellContext = createContext<AppShellContextType | undefined>(undefined)
@@ -421,7 +425,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     }
 
     return (
-        <AppShellContext.Provider value={{ refreshUserData, me, loading }}>
+        <AppShellContext.Provider value={{ refreshUserData, me, loading, handleUpgrade, handleBillingPortal, upgrading, portalLoading }}>
             <div
                 className={`flex min-h-screen bg-stone-50 text-stone-900 transition-all duration-300 ease-out ${loggingOut ? "opacity-50 scale-[0.99]" : "opacity-100 scale-100"
                     }`}
@@ -683,23 +687,44 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                                 // Show nothing while loading to avoid flickering
                                 <div className="min-w-[100px] h-8" />
                             ) : me.plan === "creator" ? (
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    className="min-w-[120px] rounded-full border-stone-200 text-xs font-medium text-stone-600 hover:bg-stone-50 hover:text-stone-900 transition-all"
-                                    onClick={handleBillingPortal}
-                                    disabled={portalLoading}
-                                >
-                                    {portalLoading ? (
-                                        <span className="flex items-center justify-center gap-2">
-                                            <Loader2 className="h-3 w-3 animate-spin" />
-                                            <span>Opening...</span>
-                                        </span>
-                                    ) : (
-                                        "Manage billing"
-                                    )}
-                                </Button>
+                                // CREATOR PLAN
+                                // If Creator hits limit (100%), show UPGRADE button to "Psychologically Hook" them
+                                usagePercent >= 100 ? (
+                                    <Button
+                                        size="sm"
+                                        className="min-w-[100px] rounded-full bg-emerald-600 text-xs font-semibold text-white shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-700 hover:scale-105 active:scale-95 animate-pulse"
+                                        onClick={handleUpgrade}
+                                        disabled={upgrading}
+                                    >
+                                        {upgrading ? (
+                                            <span className="flex items-center justify-center gap-2">
+                                                <Loader2 className="h-3 w-3 animate-spin" />
+                                                <span>Redirecting...</span>
+                                            </span>
+                                        ) : (
+                                            "Upgrade"
+                                        )}
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="min-w-[120px] rounded-full border-stone-200 text-xs font-medium text-stone-600 hover:bg-stone-50 hover:text-stone-900 transition-all"
+                                        onClick={handleBillingPortal}
+                                        disabled={portalLoading}
+                                    >
+                                        {portalLoading ? (
+                                            <span className="flex items-center justify-center gap-2">
+                                                <Loader2 className="h-3 w-3 animate-spin" />
+                                                <span>Opening...</span>
+                                            </span>
+                                        ) : (
+                                            "Manage billing"
+                                        )}
+                                    </Button>
+                                )
                             ) : (
+                                // FREE PLAN -> Upgrade
                                 <Button
                                     size="sm"
                                     className="min-w-[100px] rounded-full bg-emerald-600 text-xs font-semibold text-white shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-700 hover:scale-105 active:scale-95"
