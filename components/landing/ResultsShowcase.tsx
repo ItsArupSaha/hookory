@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { ArrowRight, Layers, LayoutList, Zap, Quote, Image as ImageIcon, Check } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { BLOG_TEXT, GENERATED_POSTS } from "@/lib/data/landing-examples"
+import { BLOG_TEXT, GENERATED_POSTS, SERIES_POSTS } from "@/lib/data/landing-examples"
 import { LinkedInPostPreview } from "@/components/features/linkedin-post-preview"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { User } from "firebase/auth"
@@ -222,42 +222,54 @@ export function ResultsShowcase() {
 
                             {/* Mode: SERIES VIEW */}
                             {mode === 'series' && (
-                                <div className="flex-grow flex flex-col h-full">
-                                    <div className="p-4 border-b border-violet-100 bg-violet-50/30 text-center">
-                                        <h4 className="text-violet-900 font-bold text-sm">4-Day Content Arc</h4>
-                                        <p className="text-violet-600 text-xs mt-0.5">Automated narrative structure</p>
+                                <div className="flex-grow flex flex-col h-full bg-stone-50/30">
+                                    <div className="p-4 border-b border-violet-100 bg-violet-50/30 text-center flex-shrink-0">
+                                        <div className="flex items-center justify-center gap-2 mb-0.5">
+                                            <Layers className="w-4 h-4 text-violet-600" />
+                                            <h4 className="text-violet-900 font-bold text-sm">4-Day Content Arc</h4>
+                                        </div>
+                                        <p className="text-violet-600 text-xs">Automated narrative structure</p>
                                     </div>
 
-                                    <div className="flex-grow overflow-y-auto custom-scrollbar p-6 space-y-4">
-                                        {[1, 2, 3, 4].map((i) => (
-                                            <div key={i} className="group flex gap-4 bg-white p-4 rounded-xl border border-stone-100 shadow-sm hover:border-violet-200 hover:shadow-md transition-all cursor-default">
-                                                <div className="flex-shrink-0 flex flex-col items-center pt-1">
-                                                    <div className="w-6 h-6 rounded-full bg-violet-100 text-violet-600 flex items-center justify-center text-xs font-bold ring-2 ring-white shadow-sm">
-                                                        {i}
-                                                    </div>
-                                                    {i !== 4 && <div className="w-0.5 h-full bg-stone-100 my-1 group-hover:bg-violet-100" />}
-                                                </div>
-                                                <div className="flex-grow">
-                                                    <div className="flex items-center justify-between mb-1">
-                                                        <h5 className="font-bold text-stone-800 text-sm">
-                                                            {i === 1 && "The Setup & Hook"}
-                                                            {i === 2 && "The Deep Dive"}
-                                                            {i === 3 && "The Framework"}
-                                                            {i === 4 && "The Takeaway"}
-                                                        </h5>
-                                                        <span className="text-[10px] text-stone-400 bg-stone-50 px-2 py-0.5 rounded-full border border-stone-100">
-                                                            {i === 1 ? "Mon" : i === 2 ? "Tue" : i === 3 ? "Wed" : "Thu"}
+                                    <div className="flex-grow overflow-y-auto custom-scrollbar p-6 space-y-8">
+                                        {SERIES_POSTS.map((post, i) => (
+                                            <div key={i} className="relative">
+                                                {/* Connecting Line */}
+                                                {i !== SERIES_POSTS.length - 1 && (
+                                                    <div className="absolute left-[1.65rem] top-12 bottom-[-2rem] w-0.5 bg-gradient-to-b from-violet-200 to-transparent z-0" />
+                                                )}
+
+                                                <div className="relative z-10">
+                                                    <div className="flex items-center gap-3 mb-3 pl-1">
+                                                        <div className="w-6 h-6 rounded-full bg-violet-600 text-white flex items-center justify-center text-xs font-bold shadow-sm ring-2 ring-white">
+                                                            {i + 1}
+                                                        </div>
+                                                        <span className="text-xs font-bold text-violet-700 uppercase tracking-wide bg-violet-50 px-2 py-0.5 rounded-full border border-violet-100">
+                                                            {post.day} • {post.title}
                                                         </span>
                                                     </div>
-                                                    <p className="text-xs text-stone-500 leading-relaxed line-clamp-2">
-                                                        {i === 1 && "Start by identifying the core misconception about web development..."}
-                                                        {i === 2 && "Explain why the market is shifting towards specialized frameworks..."}
-                                                        {i === 3 && "Introduce the 3-step roadmap: Foundation -> Framework -> Backend..."}
-                                                        {i === 4 && "Call to action: Stop overthinking and build your first project today..."}
-                                                    </p>
+
+                                                    <div className="pl-9">
+                                                        <div className="shadow-sm hover:shadow-md transition-shadow duration-300">
+                                                            <LinkedInPostPreview
+                                                                content={post.content}
+                                                                user={DEMO_USER}
+                                                                onEdit={() => { }}
+                                                                onCopy={() => { }}
+                                                            />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         ))}
+
+                                        {/* Endcap */}
+                                        <div className="flex justify-center pt-2">
+                                            <div className="flex items-center gap-2 text-violet-400 bg-violet-50/50 px-3 py-1.5 rounded-full text-[10px] font-medium border border-violet-100/50">
+                                                <Check className="w-3 h-3" />
+                                                Series Complete
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             )}

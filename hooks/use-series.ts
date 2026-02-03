@@ -124,8 +124,8 @@ export function useSeries() {
                 },
                 body: JSON.stringify({
                     inputType: tab === "text" ? "text" : "url",
-                    inputText,
-                    url,
+                    inputText: inputText || undefined,
+                    url: url || undefined, // Send undefined if empty to avoid Zod URL errors
                     context: {
                         readerContext: readerContext.trim() || undefined,
                         emojiOn,

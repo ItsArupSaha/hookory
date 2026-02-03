@@ -1,5 +1,6 @@
 import { getUserFromRequest } from "@/lib/auth-server"
 import { NextRequest, NextResponse } from "next/server"
+import { UserService } from "@/lib/services/user-service"
 
 export async function GET(req: NextRequest) {
   const authed = await getUserFromRequest(req)
@@ -8,6 +9,13 @@ export async function GET(req: NextRequest) {
   }
 
   const { uid, userDoc } = authed
+
+  // TRIGGER USAGE RESET CHECK
+  // Just visiting the dashboard should trigger a rollover if the date has passed.
+  // We don't care about the result (limited or not), just the side effect of resetting usage.
+  await UserService.checkUsageLimit(uid).catch(err => {
+    console.warn("[API /me] Failed to check/reset usage limit:", err)
+  })
 
   // Read from Firebase - this is now the source of truth
   // Webhooks update Firebase immediately when subscription changes

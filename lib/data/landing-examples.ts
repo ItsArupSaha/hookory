@@ -139,3 +139,51 @@ Speed or quality? Pick one.
 
 } as const
 
+
+export const SERIES_POSTS = [
+  {
+    day: "Mon",
+    title: "The Setup & Hook",
+    content: `There's a secret most aspiring web developers don't know. 
+
+In 2025, web development is projected to grow by 7%—not a decline, but an evolution. The web remains the backbone of business, communication, and creativity. Contrary to belief, it’s not a dying field; it’s adapting with new frameworks and technologies that create more opportunities than ever. Many think they’ve missed the boat on web development, but the truth is, it’s still a viable career path if approached with the right mindset.
+
+In 2 years, will web development continue to thrive or will it fade away? 
+
+#WebDevelopment #CareerGrowth #FutureOfWork #LearningJourney`
+  },
+  {
+    day: "Tue",
+    title: "The Deep Dive",
+    content: `Four signs your web development journey is about to stagnate. 
+
+Many newcomers dive into WordPress thinking it’s the ultimate solution, only to realize they’re trapped in a template-driven cycle. While it’s a great starting point, sticking solely to WordPress means missing out on deeper programming skills essential for complex projects. If you’re not learning HTML, CSS, and JavaScript alongside, you risk becoming a one-trick pony—unable to tackle full-stack roles.
+
+What made you finally get it? 
+
+#WebDevelopment #LearningMistakes #CareerDevelopment #Freelancing`
+  },
+  {
+    day: "Wed",
+    title: "The Framework",
+    content: `It took exactly three failed projects before I learned the importance of foundational skills. 
+
+As I flipped through my first client’s website on the table—HTML, CSS, and JavaScript were glaringly absent—I realized something crucial: without mastering these fundamentals, I was setting myself up for failure. The roadmap is clear. Start with the basics, then specialize in front-end frameworks like React or Vue, and finally, dive into backend development. Each stage builds on the last, leading to real-world experience and a strong portfolio.
+
+But that's a story for another time. 
+
+#WebDevelopment #LearningPath #CareerGrowth #PersonalDevelopment`
+  },
+  {
+    day: "Thu",
+    title: "The Takeaway",
+    content: `Ever wonder why some web developers succeed while others fail? 
+
+It’s simple: the successful ones build a strong portfolio and continuously adapt. In 2025, having a diverse skill set—including full-stack capabilities—will set you apart. As industries evolve, developers who engage with both front-end and back-end skills will be in high demand. Don’t get left behind; embrace the learning journey.
+
+Am I the only one who sees this? 
+
+#WebDevelopment #CareerSuccess #FutureReady #SkillsDevelopment`
+  }
+] as const
+

@@ -8,7 +8,8 @@ const FormatEnum = z.enum(["main-post", "story-based", "carousel", "short-viral-
 export const SeriesBodySchema = z.object({
     inputType: z.enum(["text", "url"]),
     inputText: z.string().optional(),
-    url: z.string().url().optional(),
+    // Allow valid URL OR empty string (which we treat as undefined later)
+    url: z.string().url().or(z.literal("")).optional(),
 
     context: z.object({
         readerContext: z.string().optional(),

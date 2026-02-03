@@ -25,7 +25,19 @@ export async function checkAndResetUsage(userId: string): Promise<UserUsage> {
 
     const userData = userDoc.data() as any
     const now = new Date()
-    const resetAt = userData.usageResetAt?.toDate() || getNextMonthStart()
+
+    // Determine the correct reset date based on plan
+    let resetAt = userData.usageResetAt?.toDate() || getNextMonthStart()
+
+    // For creators, align strictly with subscription billing cycle
+    if (userData.plan === "creator" && userData.subscriptionPeriodEnd) {
+      const subEnd = userData.subscriptionPeriodEnd.toDate()
+      // If subscription end is in the future compared to current stored reset date, use it
+      // This fixes the issue where reset was set to 1st of month but subscription ends later (e.g. 24th)
+      if (subEnd > now) {
+        resetAt = subEnd
+      }
+    }
 
     let usageCount = userData.usageCount || 0
     let usageResetAt = resetAt
@@ -33,12 +45,22 @@ export async function checkAndResetUsage(userId: string): Promise<UserUsage> {
     // Reset if past reset date
     if (now >= resetAt) {
       usageCount = 0
+
+      // Calculate next reset date
+      // If creator, we expect webhook to update subscriptionPeriodEnd. 
+      // Fallback to next month start if no future sub date available yet.
       usageResetAt = getNextMonthStart()
 
       transaction.update(userRef, {
         usageCount: 0,
         usageResetAt: usageResetAt,
       })
+    } else {
+      // If we corrected the reset date (e.g. alignment fix), ensure DB is updated
+      if (resetAt.getTime() !== (userData.usageResetAt?.toDate().getTime())) {
+        usageResetAt = resetAt
+        transaction.update(userRef, { usageResetAt })
+      }
     }
 
     return {
@@ -90,7 +112,17 @@ export async function incrementUsage(userId: string, amount: number = 1): Promis
 
     const userData = userDoc.data() as any
     const now = new Date()
-    const resetAt = userData.usageResetAt?.toDate() || getNextMonthStart()
+
+    // Determine the correct reset date based on plan
+    let resetAt = userData.usageResetAt?.toDate() || getNextMonthStart()
+
+    // For creators, align strictly with subscription billing cycle
+    if (userData.plan === "creator" && userData.subscriptionPeriodEnd) {
+      const subEnd = userData.subscriptionPeriodEnd.toDate()
+      if (subEnd > now) {
+        resetAt = subEnd
+      }
+    }
 
     let usageCount = (userData.usageCount || 0) + amount
     let usageResetAt = resetAt
